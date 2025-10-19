@@ -1,12 +1,13 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    return questions.filter(question => question.published);
 }
 
 /**
@@ -15,7 +16,7 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    return questions.filter((question: Question) => !(question.body === "" && question.expected === "" && question.options.length === 0));
 }
 
 /***
@@ -26,7 +27,12 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
-    return null;
+    const foundQuestion = questions.find((question) => question.id === id);
+    if (foundQuestion === undefined){
+        return null;
+    } else{
+        return foundQuestion;
+    }
 }
 
 /**
@@ -35,7 +41,7 @@ export function findQuestion(
  * Hint: use filter
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    return questions.filter((question) => question.id !== id);
 }
 
 /***
@@ -44,7 +50,7 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  * Do not modify the input array.
  */
 export function getNames(questions: Question[]): string[] {
-    return [];
+    return questions.map((question) => question.name);
 }
 
 /**
@@ -53,7 +59,7 @@ export function getNames(questions: Question[]): string[] {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    return questions.map((question) => ({text: "",submitted: false, correct: false,questionId: question.id}));
 }
 
 /***
@@ -62,7 +68,7 @@ export function makeAnswers(questions: Question[]): Answer[] {
  * Hint: as usual, do not modify the input questions array
  */
 export function publishAll(questions: Question[]): Question[] {
-    return [];
+    return questions.map((question)=> ({...question,published:true }))
 }
 
 /***
@@ -77,7 +83,8 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+     const NewQuestion = makeBlankQuestion(id,name,type); 
+     return [...questions,NewQuestion ];
 }
 
 /***
@@ -92,7 +99,8 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    return questions.map((question:Question) => question.id === targetId
+    ?{...question, name:newName}:question);
 }
 
 /**
@@ -113,5 +121,18 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    return [];
-}
+    return questions.map((question: Question)=> {if (question.id !== targetId) {
+        return question;
+        }
+        const newItem = [...question.options];
+
+        if (targetOptionIndex === -1) {
+            newItem.push(newOption);
+            return {...question, options:newItem};
+        }
+        if (targetOptionIndex<0 || targetOptionIndex >= newItem.length){
+            return question;
+        }
+        newItem[targetOptionIndex] = newOption;
+        return{...question,options:newItem};
+    });}
