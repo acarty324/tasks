@@ -1,6 +1,10 @@
 import React from "react";
 import "./App.css";
 import { Button, Container, Row, Col } from "react-bootstrap";
+import { ChangeType } from "./components/ChangeType";
+import { RevealAnswer } from "./components/RevealAnswer";
+import { TwoDice } from "./components/TwoDice";
+import { Counter } from "./components/Counter";
 
 function App(): React.JSX.Element {
     return (
@@ -8,6 +12,7 @@ function App(): React.JSX.Element {
             <header className="App-header">
                 <h1>UM COS420 with React Hooks and TypeScript</h1>
             </header>
+
             <h1>Hello World</h1>
             <img src="/autumnschair.jpeg" alt="my dog in her chair" />
 
@@ -16,8 +21,8 @@ function App(): React.JSX.Element {
                 <li>2</li>
                 <li>3</li>
             </ul>
-            <Button
-                onClick={() => console.log("Hello World!")}>
+
+            <Button onClick={() => console.log("Hello World!")}>
                 Log Hello World
             </Button>
 
@@ -26,17 +31,34 @@ function App(): React.JSX.Element {
                     <Col>
                         <div
                             style={{
-                                width: "10px", height: "10px", backgroundColor: "red",
-                            }}/>
+                                width: "10px",
+                                height: "10px",
+                                backgroundColor: "red",
+                            }}
+                        />
                     </Col>
                     <Col>
                         <div
                             style={{
-                                width: "10px", height: "10px", backgroundColor: "red",
-                            }}/>
+                                width: "10px",
+                                height: "10px",
+                                backgroundColor: "red",
+                            }}
+                        />
                     </Col>
                 </Row>
             </Container>
-        </div>);
+
+            <hr />
+            <Counter></Counter>
+            <hr />
+            <RevealAnswer></RevealAnswer>
+            <hr />
+            <TwoDice></TwoDice>
+            <hr />
+            <ChangeType></ChangeType>
+        </div>
+    );
 }
+
 export default App;
